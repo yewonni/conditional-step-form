@@ -20,7 +20,21 @@ export default function BookingPage() {
     if (isLastStep) {
       return;
     }
-    setCurrentStep(STEPS[currentIndex + 1].id);
+
+    let nextIndex = currentIndex + 1;
+
+    if (
+      STEPS[nextIndex].id === "additional-pets-info" &&
+      hasAdditionalPets !== true
+    ) {
+      nextIndex += 1;
+    }
+
+    if (STEPS[nextIndex].id === "pickup-address" && needsPickup !== true) {
+      nextIndex += 1;
+    }
+
+    setCurrentStep(STEPS[nextIndex].id);
   };
 
   const handlePrev = () => {
