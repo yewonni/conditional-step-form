@@ -16,6 +16,18 @@ export default function BookingPage() {
   const isLastStep = currentIndex === STEPS.length - 1;
   const currentStepInfo = STEPS[currentIndex];
 
+  const shouldSkip = (stepId: StepId) => {
+    if (stepId === "additional-pets-info" && hasAdditionalPets !== true) {
+      return true;
+    }
+
+    if (stepId === "pickup-address" && needsPickup !== true) {
+      return true;
+    }
+
+    return false;
+  };
+
   const handleNext = () => {
     if (isLastStep) {
       return;
@@ -23,14 +35,11 @@ export default function BookingPage() {
 
     let nextIndex = currentIndex + 1;
 
-    if (
-      STEPS[nextIndex].id === "additional-pets-info" &&
-      hasAdditionalPets !== true
-    ) {
+    if (shouldSkip(STEPS[nextIndex].id)) {
       nextIndex += 1;
     }
 
-    if (STEPS[nextIndex].id === "pickup-address" && needsPickup !== true) {
+    if (shouldSkip(STEPS[nextIndex].id)) {
       nextIndex += 1;
     }
 
@@ -41,7 +50,17 @@ export default function BookingPage() {
     if (isFirstStep) {
       return;
     }
-    setCurrentStep(STEPS[currentIndex - 1].id);
+
+    let prevIndex = currentIndex - 1;
+
+    if (shouldSkip(STEPS[prevIndex].id)) {
+      prevIndex -= 1;
+    }
+    if (shouldSkip(STEPS[prevIndex].id)) {
+      prevIndex -= 1;
+    }
+
+    setCurrentStep(STEPS[prevIndex].id);
   };
 
   return (
