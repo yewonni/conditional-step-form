@@ -36,11 +36,7 @@ export default function useBookingFlow() {
   const getNextIndex = () => {
     let nextIndex = currentIndex + 1;
 
-    if (shouldSkip(STEPS[nextIndex].id)) {
-      nextIndex += 1;
-    }
-
-    if (shouldSkip(STEPS[nextIndex].id)) {
+    while (nextIndex < STEPS.length && shouldSkip(STEPS[nextIndex].id)) {
       nextIndex += 1;
     }
 
@@ -50,11 +46,7 @@ export default function useBookingFlow() {
   const getPrevIndex = () => {
     let prevIndex = currentIndex - 1;
 
-    if (shouldSkip(STEPS[prevIndex].id)) {
-      prevIndex -= 1;
-    }
-
-    if (shouldSkip(STEPS[prevIndex].id)) {
+    while (prevIndex >= 0 && shouldSkip(STEPS[prevIndex].id)) {
       prevIndex -= 1;
     }
 
