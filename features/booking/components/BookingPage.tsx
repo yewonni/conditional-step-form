@@ -4,17 +4,25 @@ import { useState } from "react";
 import { STEPS, type StepId } from "../constants/steps";
 import YesNoQuestion from "../steps/YesNoQuestion";
 
+const PAYMENT_INDEX = STEPS.findIndex((step) => step.id === "payment");
+
 export default function BookingPage() {
   const [currentStep, setCurrentStep] = useState<StepId>(STEPS[0].id);
   const [hasAdditionalPets, setHasAdditionalPets] = useState<boolean | null>(
     null,
   );
   const [needsPickup, setNeedsPickup] = useState<boolean | null>(null);
+  const [isPaid, setIsPaid] = useState(false);
 
   const currentIndex = STEPS.findIndex((step) => step.id === currentStep);
   const isFirstStep = currentIndex === 0;
   const isLastStep = currentIndex === STEPS.length - 1;
   const currentStepInfo = STEPS[currentIndex];
+  const canGoBack =
+    !isFirstStep &&
+    !isLastStep &&
+    (!isPaid || currentIndex - 1 > PAYMENT_INDEX);
+  const canGoNext = !isLastStep && (currentStep !== "payment" || isPaid);
 
   const shouldSkip = (stepId: StepId) => {
     if (stepId === "additional-pets-info" && hasAdditionalPets !== true) {
@@ -28,11 +36,7 @@ export default function BookingPage() {
     return false;
   };
 
-  const handleNext = () => {
-    if (isLastStep) {
-      return;
-    }
-
+  const getNextIndex = () => {
     let nextIndex = currentIndex + 1;
 
     if (shouldSkip(STEPS[nextIndex].id)) {
@@ -43,24 +47,42 @@ export default function BookingPage() {
       nextIndex += 1;
     }
 
-    setCurrentStep(STEPS[nextIndex].id);
+    return nextIndex;
   };
 
-  const handlePrev = () => {
-    if (isFirstStep) {
-      return;
-    }
-
+  const getPrevIndex = () => {
     let prevIndex = currentIndex - 1;
 
     if (shouldSkip(STEPS[prevIndex].id)) {
       prevIndex -= 1;
     }
+
     if (shouldSkip(STEPS[prevIndex].id)) {
       prevIndex -= 1;
     }
 
-    setCurrentStep(STEPS[prevIndex].id);
+    return prevIndex;
+  };
+
+  const handleNext = () => {
+    if (!canGoNext) {
+      return;
+    }
+
+    setCurrentStep(STEPS[getNextIndex()].id);
+  };
+
+  const handlePrev = () => {
+    if (!canGoBack) {
+      return;
+    }
+
+    setCurrentStep(STEPS[getPrevIndex()].id);
+  };
+
+  const handlePay = () => {
+    setIsPaid(true);
+    setCurrentStep(STEPS[getNextIndex()].id);
   };
 
   return (
@@ -84,13 +106,12 @@ export default function BookingPage() {
           onChange={setNeedsPickup}
         />
       )}
+      {currentStep === "payment" && (
+        <button onClick={handlePay}>결제하기</button>
+      )}
       <div>
-        <button onClick={handlePrev} disabled={isFirstStep}>
-          이전
-        </button>
-        <button onClick={handleNext} disabled={isLastStep}>
-          다음
-        </button>
+        {canGoBack && <button onClick={handlePrev}>이전</button>}
+        {canGoNext && <button onClick={handleNext}>다음</button>}
       </div>
     </>
   );
