@@ -5,12 +5,10 @@ import useBookingFlow from "../hooks/useBookingFlow";
 
 export default function BookingPage() {
   const {
+    data,
+    updateData,
     currentStep,
     currentStepInfo,
-    hasAdditionalPets,
-    setHasAdditionalPets,
-    needsPickup,
-    setNeedsPickup,
     canGoPrev,
     canGoNext,
     goNext,
@@ -26,8 +24,8 @@ export default function BookingPage() {
           question="추가로 맡길 반려동물이 있나요?"
           yesLabel="있음"
           noLabel="없음"
-          value={hasAdditionalPets}
-          onChange={setHasAdditionalPets}
+          value={data.hasAdditionalPets}
+          onChange={(value) => updateData({ hasAdditionalPets: value })}
         />
       )}
       {currentStep === "needs-pickup" && (
@@ -35,8 +33,8 @@ export default function BookingPage() {
           question="픽업 서비스가 필요하신가요?"
           yesLabel="필요"
           noLabel="불필요"
-          value={needsPickup}
-          onChange={setNeedsPickup}
+          value={data.needsPickup}
+          onChange={(value) => updateData({ needsPickup: value })}
         />
       )}
       {currentStep === "payment" && <button onClick={pay}>결제하기</button>}

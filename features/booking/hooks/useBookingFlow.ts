@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { STEPS, type StepId } from "../constants/steps";
+import { INITIAL_BOOKING_DATA, type BookingData } from "../types";
 
 const PAYMENT_INDEX = STEPS.findIndex((step) => step.id === "payment");
 
 export default function useBookingFlow() {
   const [currentStep, setCurrentStep] = useState<StepId>(STEPS[0].id);
-  const [hasAdditionalPets, setHasAdditionalPets] = useState<boolean | null>(
-    null,
-  );
-  const [needsPickup, setNeedsPickup] = useState<boolean | null>(null);
+  const [data, setData] = useState<BookingData>(INITIAL_BOOKING_DATA);
   const [isPaid, setIsPaid] = useState(false);
 
   const currentIndex = STEPS.findIndex((step) => step.id === currentStep);
@@ -22,11 +20,11 @@ export default function useBookingFlow() {
   const canGoNext = !isLastStep && (currentStep !== "payment" || isPaid);
 
   const shouldSkip = (stepId: StepId) => {
-    if (stepId === "additional-pets-info" && hasAdditionalPets !== true) {
+    if (stepId === "additional-pets-info" && data.hasAdditionalPets !== true) {
       return true;
     }
 
-    if (stepId === "pickup-address" && needsPickup !== true) {
+    if (stepId === "pickup-address" && data.needsPickup !== true) {
       return true;
     }
 
@@ -69,18 +67,20 @@ export default function useBookingFlow() {
     setCurrentStep(STEPS[getPrevIndex()].id);
   };
 
+  const updateData = (fields: Partial<BookingData>) => {
+    setData((prev) => ({ ...prev, ...fields }));
+  };
+
   const pay = () => {
     setIsPaid(true);
     setCurrentStep(STEPS[getNextIndex()].id);
   };
 
   return {
+    data,
+    updateData,
     currentStep,
     currentStepInfo,
-    hasAdditionalPets,
-    setHasAdditionalPets,
-    needsPickup,
-    setNeedsPickup,
     canGoPrev,
     canGoNext,
     goNext,
