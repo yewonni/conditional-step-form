@@ -1,4 +1,4 @@
-type SpecialRequestsProps = {
+type SpecialRequestsStepProps = {
   value: string;
   onChange: (value: string) => void;
 };
@@ -6,7 +6,7 @@ type SpecialRequestsProps = {
 export default function SpecialRequestsStep({
   value,
   onChange,
-}: SpecialRequestsProps) {
+}: SpecialRequestsStepProps) {
   return (
     <div>
       <label htmlFor="special-requests">

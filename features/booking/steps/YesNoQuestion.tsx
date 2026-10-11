@@ -1,4 +1,4 @@
-type YesNoProps = {
+type YesNoQuestionProps = {
   question: string;
   yesLabel: string;
   noLabel: string;
@@ -12,7 +12,7 @@ export default function YesNoQuestion({
   noLabel,
   value,
   onChange,
-}: YesNoProps) {
+}: YesNoQuestionProps) {
   return (
     <div>
       <p>{question}</p>

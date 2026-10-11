@@ -1,4 +1,4 @@
-type PickupAddressProps = {
+type PickupAddressStepProps = {
   address: string;
   time: string;
   onAddressChange: (address: string) => void;
@@ -10,7 +10,7 @@ export default function PickupAddressStep({
   time,
   onAddressChange,
   onTimeChange,
-}: PickupAddressProps) {
+}: PickupAddressStepProps) {
   return (
     <div>
       <label htmlFor="pickup-address">픽업 주소</label>
