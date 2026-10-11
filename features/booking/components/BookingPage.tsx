@@ -4,6 +4,7 @@ import TermsStep from "../steps/TermsStep";
 import OwnerPetStep from "../steps/OwnerPetStep";
 import YesNoQuestion from "../steps/YesNoQuestion";
 import PickupAddressStep from "../steps/PickupAddressStep";
+import PaymentStep from "../steps/PaymentStep";
 import SpecialRequestsStep from "../steps/SpecialRequestsStep";
 import useBookingFlow from "../hooks/useBookingFlow";
 
@@ -68,13 +69,21 @@ export default function BookingPage() {
           onTimeChange={(time) => updateData({ pickupTime: time })}
         />
       )}
+      {currentStep === "payment" && (
+        <>
+          <PaymentStep
+            value={data.paymentMethod}
+            onChange={(value) => updateData({ paymentMethod: value })}
+          />
+          <button onClick={pay}>결제하기</button>
+        </>
+      )}
       {currentStep === "special-requests" && (
         <SpecialRequestsStep
           value={data.specialRequests}
           onChange={(value) => updateData({ specialRequests: value })}
         />
       )}
-      {currentStep === "payment" && <button onClick={pay}>결제하기</button>}
       <div>
         {canGoPrev && <button onClick={goPrev}>이전</button>}
         {canGoNext && <button onClick={goNext}>다음</button>}
