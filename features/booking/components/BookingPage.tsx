@@ -2,6 +2,7 @@
 
 import TermsStep from "../steps/TermsStep";
 import YesNoQuestion from "../steps/YesNoQuestion";
+import SpecialRequestsStep from "../steps/SpecialRequestsStep";
 import useBookingFlow from "../hooks/useBookingFlow";
 
 export default function BookingPage() {
@@ -42,6 +43,12 @@ export default function BookingPage() {
           noLabel="불필요"
           value={data.needsPickup}
           onChange={(value) => updateData({ needsPickup: value })}
+        />
+      )}
+      {currentStep === "special-requests" && (
+        <SpecialRequestsStep
+          value={data.specialRequests}
+          onChange={(value) => updateData({ specialRequests: value })}
         />
       )}
       {currentStep === "payment" && <button onClick={pay}>결제하기</button>}
