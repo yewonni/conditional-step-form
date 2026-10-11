@@ -1,7 +1,7 @@
 export type Pet = {
   name: string;
   species: string;
-  weight: number;
+  weight: number | null;
   specialNote: string;
 };
 
@@ -43,7 +43,7 @@ export const INITIAL_BOOKING_DATA: BookingData = {
   pet: {
     name: "",
     species: "",
-    weight: 0,
+    weight: null,
     specialNote: "",
   },
   checkInDate: "",

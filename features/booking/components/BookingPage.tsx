@@ -1,6 +1,7 @@
 "use client";
 
 import TermsStep from "../steps/TermsStep";
+import OwnerPetStep from "../steps/OwnerPetStep";
 import YesNoQuestion from "../steps/YesNoQuestion";
 import PickupAddressStep from "../steps/PickupAddressStep";
 import SpecialRequestsStep from "../steps/SpecialRequestsStep";
@@ -9,6 +10,8 @@ import useBookingFlow from "../hooks/useBookingFlow";
 export default function BookingPage() {
   const {
     data,
+    updateOwner,
+    updatePet,
     updateData,
     currentStep,
     currentStepInfo,
@@ -26,6 +29,17 @@ export default function BookingPage() {
         <TermsStep
           agreed={data.agreedToTerms}
           onChange={(agreed) => updateData({ agreedToTerms: agreed })}
+        />
+      )}
+      {currentStep === "owner-pet-info" && (
+        <OwnerPetStep
+          owner={data.owner}
+          pet={data.pet}
+          checkInDate={data.checkInDate}
+          checkOutDate={data.checkOutDate}
+          onOwnerChange={updateOwner}
+          onPetChange={updatePet}
+          onDatesChange={updateData}
         />
       )}
       {currentStep === "has-additional-pets" && (

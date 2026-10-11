@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { STEPS, type StepId } from "../constants/steps";
-import { INITIAL_BOOKING_DATA, type BookingData } from "../types";
+import { type BookingData, Owner, Pet, INITIAL_BOOKING_DATA } from "../types";
 
 const PAYMENT_INDEX = STEPS.findIndex((step) => step.id === "payment");
 
@@ -67,6 +67,14 @@ export default function useBookingFlow() {
     setCurrentStep(STEPS[getPrevIndex()].id);
   };
 
+  const updateOwner = (fields: Partial<Owner>) => {
+    setData((prev) => ({ ...prev, owner: { ...prev.owner, ...fields } }));
+  };
+
+  const updatePet = (fields: Partial<Pet>) => {
+    setData((prev) => ({ ...prev, pet: { ...prev.pet, ...fields } }));
+  };
+
   const updateData = (fields: Partial<BookingData>) => {
     setData((prev) => ({ ...prev, ...fields }));
   };
@@ -78,6 +86,8 @@ export default function useBookingFlow() {
 
   return {
     data,
+    updateOwner,
+    updatePet,
     updateData,
     currentStep,
     currentStepInfo,
