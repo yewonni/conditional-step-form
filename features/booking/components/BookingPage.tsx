@@ -2,6 +2,7 @@
 
 import TermsStep from "../steps/TermsStep";
 import YesNoQuestion from "../steps/YesNoQuestion";
+import PickupAddressStep from "../steps/PickupAddressStep";
 import SpecialRequestsStep from "../steps/SpecialRequestsStep";
 import useBookingFlow from "../hooks/useBookingFlow";
 
@@ -43,6 +44,14 @@ export default function BookingPage() {
           noLabel="불필요"
           value={data.needsPickup}
           onChange={(value) => updateData({ needsPickup: value })}
+        />
+      )}
+      {currentStep === "pickup-address" && (
+        <PickupAddressStep
+          address={data.pickupAddress}
+          time={data.pickupTime}
+          onAddressChange={(address) => updateData({ pickupAddress: address })}
+          onTimeChange={(time) => updateData({ pickupTime: time })}
         />
       )}
       {currentStep === "special-requests" && (
