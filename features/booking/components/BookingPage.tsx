@@ -1,5 +1,6 @@
 "use client";
 
+import TermsStep from "../steps/TermsStep";
 import YesNoQuestion from "../steps/YesNoQuestion";
 import useBookingFlow from "../hooks/useBookingFlow";
 
@@ -19,6 +20,12 @@ export default function BookingPage() {
   return (
     <>
       <h2>{currentStepInfo.label}</h2>
+      {currentStep === "terms" && (
+        <TermsStep
+          agreed={data.agreedToTerms}
+          onChange={(agreed) => updateData({ agreedToTerms: agreed })}
+        />
+      )}
       {currentStep === "has-additional-pets" && (
         <YesNoQuestion
           question="추가로 맡길 반려동물이 있나요?"
